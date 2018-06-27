@@ -1,0 +1,39 @@
+Starting a Gradle Daemon, 1 incompatible Daemon could not be reused, use --status for details
+app: 'annotationProcessor' dependencies won't be recognized as kapt annotation processors. Please change the configuration name to 'kapt' for these artifacts: 'android.arch.persistence.room:compiler:1.1.0'.
+'kapt.generateStubs' is not used by the 'kotlin-kapt' plugin
+'kapt.generateStubs' is not used by the 'kotlin-kapt' plugin
+'kapt.generateStubs' is not used by the 'kotlin-kapt' plugin
+'kapt.generateStubs' is not used by the 'kotlin-kapt' plugin
+'kapt.generateStubs' is not used by the 'kotlin-kapt' plugin
+'kapt.generateStubs' is not used by the 'kotlin-kapt' plugin
+'kapt.generateStubs' is not used by the 'kotlin-kapt' plugin
+'kapt.generateStubs' is not used by the 'kotlin-kapt' plugin
+'kapt.generateStubs' is not used by the 'kotlin-kapt' plugin
+'kapt.generateStubs' is not used by the 'kotlin-kapt' plugin
+:app:preBuild UP-TO-DATE
+:graphlibrary:preBuild UP-TO-DATE
+:graphlibrary:preDebugBuild UP-TO-DATE
+:graphlibrary:checkDebugManifest UP-TO-DATE
+:graphlibrary:processDebugManifestC:\Users\orkaj\AndroidStudioProjects\Alpha\Kphysics\graphlibrary\src\main\AndroidManifest.xml:1:1-7:12 Error:
+	tools:replace specified at line:1 for attribute android:appComponentFactory, but no new value specified
+C:\Users\orkaj\AndroidStudioProjects\Alpha\Kphysics\graphlibrary\src\main\AndroidManifest.xml Error:
+	Validation failed, exiting
+
+
+See http://g.co/androidstudio/manifest-merger for more information about the manifest merger.
+
+:graphlibrary:processDebugManifest FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':graphlibrary:processDebugManifest'.
+> Manifest merger failed with multiple errors, see logs
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 8s
+2 actionable tasks: 1 executed, 1 up-to-date

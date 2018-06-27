@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Kphysics</string>
+    <string name="action_settings">Settings</string>
+    <string name="sensor_list">Lista de Sensores</string>
+    <string name="project_gallery">Mis Proyectos</string>
+    <string name="tools">Configuración</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="waiting_for_sensor">waiting for sensor...</string>
+
+</resources>
