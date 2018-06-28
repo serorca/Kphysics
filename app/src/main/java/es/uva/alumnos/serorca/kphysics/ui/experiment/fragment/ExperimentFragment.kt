@@ -6,6 +6,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -36,6 +37,7 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
 
     private var sensorType: Int = 0
     private var sensorName: String? = null
+    private var isMultiple: Boolean? = null
     private var rawValues: FloatArray? = null
     private val sensorManager: SensorManager by lazy {
         activity!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -47,40 +49,9 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        sensorName = this.arguments!!.getString(ARG_TYPE_NAME)
-
-        when (sensorName) {
-            "Accelerometer" -> sensorType = Sensor.TYPE_ACCELEROMETER
-            "Ambient Temperature" -> sensorType = Sensor.TYPE_AMBIENT_TEMPERATURE
-            "Gravity" -> sensorType = Sensor.TYPE_GRAVITY
-            "Gyroscope" -> sensorType = Sensor.TYPE_GYROSCOPE
-            "Light" -> sensorType = Sensor.TYPE_LIGHT
-            "Linear Acceleration" -> sensorType = Sensor.TYPE_LINEAR_ACCELERATION
-            "Magnetic Field" -> sensorType = Sensor.TYPE_MAGNETIC_FIELD
-            "Orientation" -> sensorType = Sensor.TYPE_ORIENTATION
-            "Pressure" -> sensorType = Sensor.TYPE_PRESSURE
-            "Proximity" -> sensorType = Sensor.TYPE_PROXIMITY
-            "Relative Humidity" -> sensorType = Sensor.TYPE_RELATIVE_HUMIDITY
-            "Rotation Vector" -> sensorType = Sensor.TYPE_ROTATION_VECTOR
-            "Temperature" -> sensorType = Sensor.TYPE_TEMPERATURE
-            else -> sensorType = Sensor.TYPE_ACCELEROMETER
-        }
-
-//        showLineGraph()
+        showLineGraph()
         btn_start.setOnClickListener(this)
         btn_pause.setOnClickListener(this)
-        chart.setOnChartValueSelectedListener(this)
-        chart.description.isEnabled
-        chart.setTouchEnabled(true)
-        chart.setScaleEnabled(true)
-        chart.setDrawGridBackground(true)
-        chart.setPinchZoom(true)
-        chart.setBackgroundColor(Color.LTGRAY)
-
-        val data = LineData()
-        data.setValueTextColor(Color.WHITE)
-        chart.data = data
     }
 
 
@@ -100,7 +71,107 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
 
 
     override fun showLineGraph() {
+        sensorName = this.arguments!!.getString(ARG_TYPE_NAME)
 
+        when (sensorName) {
+            "Accelerometer" -> {
+                sensorType = Sensor.TYPE_ACCELEROMETER
+                isMultiple = true
+            }
+            "Ambient Temperature" -> {
+                sensorType = Sensor.TYPE_AMBIENT_TEMPERATURE
+                isMultiple = false
+            }
+            "Gravity" -> {
+                sensorType = Sensor.TYPE_GRAVITY
+                isMultiple = true
+            }
+            "Gyroscope" -> {
+                sensorType = Sensor.TYPE_GYROSCOPE
+                isMultiple = true
+            }
+            "Light" -> {
+                sensorType = Sensor.TYPE_LIGHT
+                isMultiple = false
+            }
+            "Linear Acceleration" -> {
+                sensorType = Sensor.TYPE_LINEAR_ACCELERATION
+                isMultiple = false
+            }
+            "Magnetic Field" -> {
+                sensorType = Sensor.TYPE_MAGNETIC_FIELD
+                isMultiple = false
+            }
+            "Orientation" -> {
+                sensorType = Sensor.TYPE_ORIENTATION
+                isMultiple = true
+            }
+            "Pressure" -> {
+                sensorType = Sensor.TYPE_PRESSURE
+                isMultiple = false
+            }
+            "Proximity" -> {
+                sensorType = Sensor.TYPE_PROXIMITY
+                isMultiple = false
+            }
+            "Relative Humidity" -> {
+                sensorType = Sensor.TYPE_RELATIVE_HUMIDITY
+                isMultiple = false
+            }
+            "Rotation Vector" -> {
+                sensorType = Sensor.TYPE_ROTATION_VECTOR
+                isMultiple = true
+            }
+            "Temperature" -> {
+                sensorType = Sensor.TYPE_TEMPERATURE
+                isMultiple = false
+            }
+            else -> {
+                sensorType = Sensor.TYPE_ACCELEROMETER
+                isMultiple = true
+            }
+        }
+
+        //chart
+        chart.setOnChartValueSelectedListener(this)
+        chart.description.isEnabled
+        chart.setTouchEnabled(true)
+        chart.setScaleEnabled(true)
+        chart.setDrawGridBackground(true)
+        chart.setPinchZoom(true)
+        chart.setBackgroundColor(Color.LTGRAY)
+        val data = LineData()
+        data.setValueTextColor(Color.WHITE)
+        chart.data = data
+
+        if (isMultiple!!) {
+
+            //chart2
+            chart2.visibility = View.VISIBLE
+            chart2.setOnChartValueSelectedListener(this)
+            chart2.description.isEnabled
+            chart2.setTouchEnabled(true)
+            chart2.setScaleEnabled(true)
+            chart2.setDrawGridBackground(true)
+            chart2.setPinchZoom(true)
+            chart2.setBackgroundColor(Color.LTGRAY)
+            val data2 = LineData()
+            data2.setValueTextColor(Color.WHITE)
+            chart2.data = data2
+
+            //chart3
+            chart3.visibility = View.VISIBLE
+            chart3.setOnChartValueSelectedListener(this)
+            chart3.description.isEnabled
+            chart3.setTouchEnabled(true)
+            chart3.setScaleEnabled(true)
+            chart3.setDrawGridBackground(true)
+            chart3.setPinchZoom(true)
+            chart3.setBackgroundColor(Color.LTGRAY)
+            val data3 = LineData()
+            data3.setValueTextColor(Color.WHITE)
+            chart3.data = data3
+        }
     }
 
     override fun onResume() {
@@ -141,11 +212,16 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
         sensor.text = message
         rawValues = event.values
 
+        if (isMultiple == null) {
+            isMultiple = y.compareTo(z).compareTo(0.0) != 0
+        }
     }
 
     private fun addEntry() {
 
         val data = chart.data
+        val data2 = chart2.data
+        val data3 = chart3.data
 
         if (data != null) {
 
@@ -166,6 +242,50 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
 
             // move to the latest entry
             chart.moveViewToX(data.entryCount.toFloat())
+//            chart.invalidate()
+        }
+
+        if (data2 != null) {
+
+            var set: ILineDataSet? = data2.getDataSetByIndex(0)
+
+            if (set == null) {
+                set = createSet()
+                data2.addDataSet(set)
+            }
+
+            data2.addEntry(Entry(set.entryCount.toFloat(), rawValues!![1]), 0)
+            data2.notifyDataChanged()
+            // let the chart know it's data has changed
+            chart2.notifyDataSetChanged()
+            // limit the number of visible entries
+            chart2.setVisibleXRangeMaximum(120f)
+            // mChart.setVisibleYRange(30, AxisDependency.LEFT);
+
+            // move to the latest entry
+            chart2.moveViewToX(data.entryCount.toFloat())
+//            chart.invalidate()
+        }
+
+        if (data3 != null) {
+
+            var set: ILineDataSet? = data3.getDataSetByIndex(0)
+
+            if (set == null) {
+                set = createSet()
+                data3.addDataSet(set)
+            }
+
+            data3.addEntry(Entry(set.entryCount.toFloat(), rawValues!![3]), 0)
+            data3.notifyDataChanged()
+            // let the chart know it's data has changed
+            chart3.notifyDataSetChanged()
+            // limit the number of visible entries
+            chart3.setVisibleXRangeMaximum(120f)
+            // mChart.setVisibleYRange(30, AxisDependency.LEFT);
+
+            // move to the latest entry
+            chart3.moveViewToX(data.entryCount.toFloat())
 //            chart.invalidate()
         }
     }
