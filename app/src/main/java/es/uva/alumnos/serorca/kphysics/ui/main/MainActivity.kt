@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, NavigationView.OnNa
 
         initNavigation()
 
-        fab.setOnClickListener { _ -> showDialog()}
+        fab.setOnClickListener { _ -> showDialog() }
     }
 
     override fun showProyectFragment() {
@@ -116,7 +116,20 @@ class MainActivity : AppCompatActivity(), MainContract.View, NavigationView.OnNa
 
         lateinit var dialog: AlertDialog
 
-        val sensorOptions = arrayOf("Acelerometro", "Barometro", "Osciloscopio", "Magnetómetro")
+        val sensorOptions = arrayOf(
+                "Accelerometer",
+                "Ambient Temperature",
+                "Gravity",
+                "Gyroscope",
+                "Light",
+                "Linear Acceleration",
+                "Magnetic Field",
+                "Orientation",
+                "Pressure",
+                "Proximity",
+                "Relative Humidity",
+                "Rotation Vector",
+                "Temperature")
 
         val arrayChecked = booleanArrayOf(false, false, false, false)
 
