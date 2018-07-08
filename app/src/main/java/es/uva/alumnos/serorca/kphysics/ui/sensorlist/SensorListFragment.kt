@@ -3,12 +3,11 @@ package es.uva.alumnos.serorca.kphysics.ui.sensorlist
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import es.uva.alumnos.serorca.kphysics.R
-import es.uva.alumnos.serorca.kphysics.data.database.SensorInfo
+import es.uva.alumnos.serorca.kphysics.data.model.SensorInfo
 import es.uva.alumnos.serorca.kphysics.di.component.DaggerFragmentComponent
 import es.uva.alumnos.serorca.kphysics.di.module.FragmentModule
 import kotlinx.android.synthetic.main.fragment_sensor_list.*

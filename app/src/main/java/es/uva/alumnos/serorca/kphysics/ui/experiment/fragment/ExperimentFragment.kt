@@ -21,6 +21,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import es.uva.alumnos.serorca.kphysics.R
+import es.uva.alumnos.serorca.kphysics.ui.experiment.activity.ExperimentTabAdapter
+import es.uva.alumnos.serorca.kphysics.utils.csv.WriteCSV
 import kotlinx.android.synthetic.main.fragment_sensor_view.*
 import java.util.*
 import java.util.concurrent.CompletableFuture.runAsync
@@ -31,14 +33,15 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
         SensorEventListener {
 
     companion object {
-
         const val ARG_TYPE_NAME = "ARG_TYPE_NAME"
+        const val CURRENT_PROJECT = "CURRENT_PROJECT"
     }
 
     private var sensorType: Int = 0
     private var sensorName: String? = null
     private var isMultiple: Boolean? = null
     private var rawValues: FloatArray? = null
+    private var currentProject: String? = null
     private val sensorManager: SensorManager by lazy {
         activity!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     }
@@ -49,6 +52,7 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        currentProject = this.arguments!!.getString(CURRENT_PROJECT)
         showLineGraph()
         btn_start.setOnClickListener(this)
         btn_pause.setOnClickListener(this)
@@ -232,6 +236,13 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
                 data.addDataSet(set)
             }
 
+            //CSV creation
+//            if (currentProject != null) {
+//                val entryString = arrayOf(currentProject!!, set.entryCount.toString()
+//                        + rawValues!![0].toString())
+//                runAsync { WriteCSV.main(entryString) }
+//            }
+
             data.addEntry(Entry(set.entryCount.toFloat(), rawValues!![0]), 0)
             data.notifyDataChanged()
             // let the chart know it's data has changed
@@ -276,7 +287,7 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
                 data3.addDataSet(set)
             }
 
-            data3.addEntry(Entry(set.entryCount.toFloat(), rawValues!![3]), 0)
+            data3.addEntry(Entry(set.entryCount.toFloat(), rawValues!![2]), 0)
             data3.notifyDataChanged()
             // let the chart know it's data has changed
             chart3.notifyDataSetChanged()
@@ -325,7 +336,6 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
                 try {
                     Thread.sleep(300)
                 } catch (e: InterruptedException) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace()
                 }
 

@@ -9,20 +9,29 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
 import es.uva.alumnos.serorca.kphysics.R
+import es.uva.alumnos.serorca.kphysics.data.database.DatabaseHelper
 import es.uva.alumnos.serorca.kphysics.di.component.DaggerActivityComponent
 import es.uva.alumnos.serorca.kphysics.di.module.ActivityModule
 import es.uva.alumnos.serorca.kphysics.ui.experiment.activity.ExperimentActivity
+import es.uva.alumnos.serorca.kphysics.ui.experiment.fragment.ExperimentFragment
 import es.uva.alumnos.serorca.kphysics.ui.proyectlist.ProyectListFragment
 import es.uva.alumnos.serorca.kphysics.ui.sensorlist.SensorListFragment
 import es.uva.alumnos.serorca.kphysics.utils.addFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import javax.inject.Inject
+import android.widget.LinearLayout
+import android.widget.ListView
+
 
 class MainActivity : AppCompatActivity(), MainContract.View, NavigationView.OnNavigationItemSelectedListener {
     @Inject
     lateinit var presenter: MainContract.Presenter
+
+    private val db = DatabaseHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +44,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, NavigationView.OnNa
 
         initNavigation()
 
-        fab.setOnClickListener { _ -> showDialog() }
+        fab.setOnClickListener { _ ->
+            showFirstDialog()
+        }
     }
 
     override fun showProyectFragment() {
@@ -112,6 +123,27 @@ class MainActivity : AppCompatActivity(), MainContract.View, NavigationView.OnNa
         activityComponent.inject(this)
     }
 
+    private fun showFirstDialog() {
+
+        lateinit var dialog: AlertDialog
+
+        val builder = AlertDialog.Builder(this)
+        val input = EditText(this)
+
+        builder.setTitle("Introduce el nombre de tu proyecto:")
+        input.hint = "Nombre del proyecto"
+        builder.setView(input)
+
+        builder.setPositiveButton("Siguiente") { _, _ ->
+            db.insertProjectData(input.text.toString(), "Accelerometer")
+            ExperimentFragment.CURRENT_PROJECT to input.text.toString()
+            showDialog()
+        }
+        builder.setNegativeButton("Cancelar") { _, _ -> }
+        dialog = builder.create()
+        dialog.show()
+    }
+
     private fun showDialog() {
 
         lateinit var dialog: AlertDialog
@@ -131,20 +163,33 @@ class MainActivity : AppCompatActivity(), MainContract.View, NavigationView.OnNa
                 "Rotation Vector",
                 "Temperature")
 
-        val arrayChecked = booleanArrayOf(false, false, false, false)
+        val arrayChecked = booleanArrayOf(
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+        )
 
         val builder = AlertDialog.Builder(this)
-
         builder.setTitle("Escoge los sensores de tu experimento:")
         builder.setMultiChoiceItems(sensorOptions, arrayChecked) { _, which, isChecked ->
             arrayChecked[which] = isChecked
         }
         builder.setPositiveButton("Aceptar") { _, _ ->
             val intent = ExperimentActivity.newIntent(this, arrayChecked, 0, true)
+
             startActivity(intent)
         }
         builder.setNegativeButton("Cancelar") { _, _ -> }
-
         dialog = builder.create()
         dialog.show()
     }

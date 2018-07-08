@@ -64,6 +64,14 @@ dependencies {
 //    implementation "org.jetbrains.anko:anko-cardview-v7:0.10.5"
 //    implementation "org.jetbrains.anko:anko-recyclerview-v7:0.10.0-beta-2"
     implementation "org.jetbrains.anko:anko-support-v4:0.10.5"
+    implementation "org.jetbrains.anko:anko-commons:0.10.5"
+    implementation "org.jetbrains.anko:anko-sqlite:0.10.5"
+
+    //Open CSV
+    implementation "com.opencsv:opencsv:4.0"
+
+    //Apache commons
+    implementation "org.apache.commons:commons-csv:1.5"
 
 //    // ui
 //    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'

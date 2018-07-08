@@ -2,15 +2,15 @@ package es.uva.alumnos.serorca.kphysics.ui.proyectlist
 
 class ProyectListPresenter: ProyectListContract.Presenter{
 
+    private lateinit var view: ProyectListContract.View
+
     override fun subscribe() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun unsubscribe() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun attach(view: ProyectListContract.View) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.view = view
     }
 }
