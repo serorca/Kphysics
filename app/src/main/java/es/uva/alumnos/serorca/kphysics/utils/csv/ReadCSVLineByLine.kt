@@ -8,12 +8,12 @@ import java.io.IOException
 
 class ReadCSVLineByLine {
 
-    private var File_name = "F://Csv Files//mySheet.csv"
+    private var fileName = "+$FILE_NAME.csv"
     private var reader: CSVReader? = null
 
     fun readCSV() {
         try {
-            reader = CSVReader(FileReader(File_name))
+            reader = CSVReader(FileReader(fileName))
             val column: Array<String> = reader!!.readNext()
             while (reader!!.readNext() != null) {
                 for (i in column.indices) {
@@ -30,6 +30,7 @@ class ReadCSVLineByLine {
     }
 
     companion object {
+        const val FILE_NAME = "FILE_NAME"
         @JvmStatic
         fun main(s: Array<String>) {
             val readFile = ReadCSVLineByLine()

@@ -90,7 +90,8 @@ class SensorListAdapter(
                 val position: Int = adapterPosition
                 val dumbArray: BooleanArray = booleanArrayOf(false)
 
-                val intent = ExperimentActivity.newIntent(context, dumbArray, position, false)
+                val intent = ExperimentActivity.newIntent(context, dumbArray, position,
+                        null, false)
                 startActivity(context, intent, null)
 
             }

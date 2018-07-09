@@ -21,6 +21,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import es.uva.alumnos.serorca.kphysics.R
+import es.uva.alumnos.serorca.kphysics.ui.experiment.activity.ExperimentActivity
+import es.uva.alumnos.serorca.kphysics.ui.experiment.activity.ExperimentActivity.Companion.CURRENT_EXPERIMENT
 import es.uva.alumnos.serorca.kphysics.ui.experiment.activity.ExperimentTabAdapter
 import es.uva.alumnos.serorca.kphysics.utils.csv.WriteCSV
 import kotlinx.android.synthetic.main.fragment_sensor_view.*
@@ -34,7 +36,8 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
 
     companion object {
         const val ARG_TYPE_NAME = "ARG_TYPE_NAME"
-        const val CURRENT_PROJECT = "CURRENT_PROJECT"
+//        const val CURRENT_EXPERIMENT = "current_experiment"
+
     }
 
     private var sensorType: Int = 0
@@ -52,7 +55,7 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        currentProject = this.arguments!!.getString(CURRENT_PROJECT)
+        currentProject = activity!!.intent.getStringExtra(CURRENT_EXPERIMENT)
         showLineGraph()
         btn_start.setOnClickListener(this)
         btn_pause.setOnClickListener(this)
@@ -237,11 +240,11 @@ class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
             }
 
             //CSV creation
-//            if (currentProject != null) {
-//                val entryString = arrayOf(currentProject!!, set.entryCount.toString()
-//                        + rawValues!![0].toString())
-//                runAsync { WriteCSV.main(entryString) }
-//            }
+            if (currentProject != null) {
+                val entryString = arrayOf(currentProject!!, set.entryCount.toString()
+                        + "," + rawValues!![0].toString())
+                WriteCSV.main(entryString, context!!.filesDir)
+            }
 
             data.addEntry(Entry(set.entryCount.toFloat(), rawValues!![0]), 0)
             data.notifyDataChanged()

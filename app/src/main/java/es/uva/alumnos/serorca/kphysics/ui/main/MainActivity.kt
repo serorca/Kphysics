@@ -136,15 +136,14 @@ class MainActivity : AppCompatActivity(), MainContract.View, NavigationView.OnNa
 
         builder.setPositiveButton("Siguiente") { _, _ ->
             db.insertProjectData(input.text.toString(), "Accelerometer")
-            ExperimentFragment.CURRENT_PROJECT to input.text.toString()
-            showDialog()
+            showDialog(input.text.toString())
         }
         builder.setNegativeButton("Cancelar") { _, _ -> }
         dialog = builder.create()
         dialog.show()
     }
 
-    private fun showDialog() {
+    private fun showDialog(currentProject: String) {
 
         lateinit var dialog: AlertDialog
 
@@ -185,7 +184,8 @@ class MainActivity : AppCompatActivity(), MainContract.View, NavigationView.OnNa
             arrayChecked[which] = isChecked
         }
         builder.setPositiveButton("Aceptar") { _, _ ->
-            val intent = ExperimentActivity.newIntent(this, arrayChecked, 0, true)
+            val intent = ExperimentActivity.newIntent(this, arrayChecked, 0,
+                    currentProject, true)
 
             startActivity(intent)
         }

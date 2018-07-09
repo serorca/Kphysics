@@ -30,5 +30,4 @@ class ProyectListFragment: Fragment(), ProyectListContract.View {
         recyclerGridView.layoutManager = GridLayoutManager(activity, 2)
         recyclerGridView.adapter = adapter
     }
-
 }

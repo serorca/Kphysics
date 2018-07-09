@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import es.uva.alumnos.serorca.kphysics.data.model.Project
 
-class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "project_db_2.db", null, 2) {
+class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "project_db_3.db", null, 3) {
 
     companion object {
         const val TABLE_EXPERIMENT: String = "TABLE_EXPERIMENT"
