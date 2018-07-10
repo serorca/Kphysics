@@ -10,8 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import es.uva.alumnos.serorca.kphysics.R
 import es.uva.alumnos.serorca.kphysics.data.database.DatabaseHelper
-import es.uva.alumnos.serorca.kphysics.ui.experiment.activity.ExperimentActivity
-import es.uva.alumnos.serorca.kphysics.utils.csv.OpenCSVReader
+import es.uva.alumnos.serorca.kphysics.ui.main.MainActivity
 
 class ProyectListAdapter(
         private val context: Context) : RecyclerView.Adapter<ProyectListAdapter.ProyectListViewHolder>() {
@@ -40,13 +39,8 @@ class ProyectListAdapter(
 
         init {
             itemView.setOnClickListener { _ ->
-                val position: Int = adapterPosition
-                OpenCSVReader.readCSVFile(context.filesDir.toString() + "/"
-                        + projectName.text.toString())
-//                val dumbArray: BooleanArray = booleanArrayOf(false)
-//
-//                val intent = ExperimentActivity.newIntent(context, dumbArray, position, null,false)
-//                ContextCompat.startActivity(context, intent, null)
+                val intent = MainActivity.newIntent(context, projectName.text.toString())
+                ContextCompat.startActivity(context, intent, null)
             }
         }
     }

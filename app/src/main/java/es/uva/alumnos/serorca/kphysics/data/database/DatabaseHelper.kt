@@ -56,6 +56,11 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "project_db_3
         return projList
     }
 
+    fun deleteProject(name: String){
+        val db: SQLiteDatabase = this.writableDatabase
+        db.execSQL("DROP TABLE IF EXISTS $name")
+    }
+
     fun getParticularProjectData(name: String): Project {
         val db = this.readableDatabase
         var project: Project? = null

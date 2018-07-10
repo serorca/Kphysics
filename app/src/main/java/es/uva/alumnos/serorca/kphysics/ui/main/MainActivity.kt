@@ -1,5 +1,7 @@
 package es.uva.alumnos.serorca.kphysics.ui.main
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -9,39 +11,55 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.EditText
 import es.uva.alumnos.serorca.kphysics.R
 import es.uva.alumnos.serorca.kphysics.data.database.DatabaseHelper
 import es.uva.alumnos.serorca.kphysics.di.component.DaggerActivityComponent
 import es.uva.alumnos.serorca.kphysics.di.module.ActivityModule
 import es.uva.alumnos.serorca.kphysics.ui.experiment.activity.ExperimentActivity
-import es.uva.alumnos.serorca.kphysics.ui.experiment.fragment.ExperimentFragment
+import es.uva.alumnos.serorca.kphysics.ui.proyectlist.ProjectFragment
 import es.uva.alumnos.serorca.kphysics.ui.proyectlist.ProyectListFragment
 import es.uva.alumnos.serorca.kphysics.ui.sensorlist.SensorListFragment
 import es.uva.alumnos.serorca.kphysics.utils.addFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import org.jetbrains.anko.support.v4.withArguments
 import javax.inject.Inject
-import android.widget.LinearLayout
-import android.widget.ListView
 
 
 class MainActivity : AppCompatActivity(), MainContract.View, NavigationView.OnNavigationItemSelectedListener {
+
+    private val db = DatabaseHelper(this)
+    private var projectName : String? = null
+
     @Inject
     lateinit var presenter: MainContract.Presenter
 
-    private val db = DatabaseHelper(this)
+    companion object {
+
+        private const val PROJECT_NAME = "PROJECT_NAME"
+
+        fun newIntent(context: Context,
+                      projectName: String): Intent {
+
+            val intent = Intent(context, MainActivity::class.java)
+            intent.putExtra(PROJECT_NAME, projectName)
+            return intent
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
         injectDependency()
-
         presenter.attach(this)
-
+        projectName = intent.getStringExtra(PROJECT_NAME)
+        if (projectName!= null)
+            navigateTo(ProjectFragment.newInstance().withArguments(
+                    ProjectFragment.PROJECT_NAME to projectName
+            ))
         initNavigation()
 
         fab.setOnClickListener { _ ->
@@ -55,7 +73,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, NavigationView.OnNa
 
     override fun showSensorFragment() {
         addFragment(SensorListFragment(), R.id.contentFrame, SensorListFragment.TAG)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

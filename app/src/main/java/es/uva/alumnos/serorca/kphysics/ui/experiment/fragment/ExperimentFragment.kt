@@ -29,7 +29,8 @@ import kotlinx.android.synthetic.main.fragment_sensor_view.*
 import java.util.*
 import java.util.concurrent.CompletableFuture.runAsync
 
-class ExperimentFragment : Fragment(), ExperimentFragmentContract.View,
+class ExperimentFragment : Fragment(),
+        ExperimentFragmentContract.View,
         View.OnClickListener,
         OnChartValueSelectedListener,
         SensorEventListener {
